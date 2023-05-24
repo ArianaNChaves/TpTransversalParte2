@@ -27,9 +27,10 @@ public class Main {
         AlumnoData alumnoData = new AlumnoData();
         MateriaData materiaData = new MateriaData();
         InscripcionData inscripcionData = new InscripcionData();
-        Alumno alumno = new Alumno(1235467, "Chaves", "Ariana", LocalDate.now(), 1);
-        Materia materia = new Materia("Matematica", 2, 1);
+        Alumno alumno = new Alumno(1, 1235467, "Chaves", "Ariana", LocalDate.now(), 1);
+        Materia materia = new Materia(1, "Matematica", 2, 1);
         Inscripcion inscripcion = new Inscripcion(8, alumno, materia);
+        
         //test
         //Alumno
         alumnoData.guardarAlumno(alumno);
@@ -41,6 +42,8 @@ public class Main {
         inscripcionData.guardarInscripcion(inscripcion);
         System.out.println(inscripcionData.buscarInscripcion(1));
         
+        System.out.println(inscripcionData.obtenerMateriasNoCursadas(1));
+        System.out.println(inscripcionData.obtenerMateriasCursadas(1));
     }
     
 }

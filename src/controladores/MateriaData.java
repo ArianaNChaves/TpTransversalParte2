@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import transversalparte2.Conexion;
 import transversalparte2.Entity.Materia;
 
@@ -74,6 +76,62 @@ public class MateriaData {
         return materia;
     }
     
+    public void modificarMateria(Materia materia) {
+        String sql = "UPDATE materia SET nombre = ?, año = ? WHERE  idMateria = ? AND estado = 1";
+        PreparedStatement ps = null;
+
+        try {
+            ps = conexion.prepareStatement(sql);
+
+            ps.setString(1, materia.getNombre());
+            ps.setInt(2, materia.getAnio());
+            ps.setInt(3, materia.getIdMateria());
+
+            ps.executeUpdate();
+
+           // CARTEL DE MODIFICACION EXITOSA
+
+        } catch (SQLException ex) {
+            // CARTEL DE ERROR
+       }
+    }
     
+    public void eliminarMateria(int id) {
+
+        try {
+            String sql = "UPDATE materia SET estado = 0 WHERE idMateria = ? ";
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            ps.close();
+            // CARTEL DE ELIMINADO CORRECTAMENTE
+        } catch (SQLException e) {
+            // CARTEL DE ERROR
+       }
+    }
+    
+    public List<Materia> listarMaterias() {
+
+        List<Materia> materias = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM materia WHERE estado = 1 ";
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Materia materia = new Materia();
+
+                materia.setIdMateria(rs.getInt("idMateria"));
+                materia.setNombre(rs.getString("nombre"));
+                materia.setAnio(rs.getInt("año"));
+                materia.setEstado(Utils.boolToInt(rs.getBoolean("estado")));
+                materias.add(materia);
+            }
+            ps.close();
+
+        } catch (SQLException ex) {
+            // CARTEL DE ERROR
+        }
+        return materias;
+    }
     
 }
